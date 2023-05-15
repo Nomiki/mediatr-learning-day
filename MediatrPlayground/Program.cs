@@ -1,3 +1,6 @@
+using MediatrPlayground.Dal;
+using MongoDB.Driver;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +15,19 @@ builder.Services.AddMediatR(c =>
     c.Lifetime = ServiceLifetime.Scoped;
     c.RegisterServicesFromAssembly(typeof(Program).Assembly);
 });
+
+// Registering mongodb on localhost
+var mongoClient = new MongoClient();
+builder.Services.AddSingleton<IMongoClient>(mongoClient);
+builder.Services.AddSingleton(sp =>
+{
+    IMongoClient client = sp.GetRequiredService<IMongoClient>();
+
+    return client.GetDatabase("mediatr-playground");
+});
+
+// Registering mongo repositories
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

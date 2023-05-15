@@ -1,5 +1,4 @@
 using MediatR;
-using MediatrPlayground.Models;
 using MediatrPlayground.Models.Requests;
 using MediatrPlayground.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +27,13 @@ public class UserController : ControllerBase
         };
         
         GetUserResponse response = await _mediator.Send(request);
+        return Ok(response);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult> Post([FromBody] PostUserRequest request)
+    {
+        PostUserResponse response = await _mediator.Send(request);
         return Ok(response);
     }
 }
