@@ -1,4 +1,7 @@
+using MediatR;
 using MediatrPlayground.Models;
+using MediatrPlayground.Models.Requests;
+using MediatrPlayground.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MediatrPlayground.Controllers;
@@ -8,19 +11,23 @@ namespace MediatrPlayground.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
+    private readonly IMediator _mediator;
 
-    public UserController(ILogger<UserController> logger)
+    public UserController(ILogger<UserController> logger, IMediator mediator)
     {
         _logger = logger;
+        _mediator = mediator;
     }
 
     [HttpGet("{userId}")]
-    public ActionResult Get([FromRoute] string userId)
+    public async Task<ActionResult> Get([FromRoute] string userId)
     {
-        return Ok(new UserModel
+        GetUserRequest request = new GetUserRequest
         {
             UserId = userId,
-            Name = "John Doe",
-        });
+        };
+        
+        GetUserResponse response = await _mediator.Send(request);
+        return Ok(response);
     }
 }
