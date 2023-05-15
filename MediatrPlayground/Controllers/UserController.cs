@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MediatrPlayground.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
@@ -14,7 +14,7 @@ public class UserController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "{userId}")]
+    [HttpGet("{userId}")]
     public ActionResult Get([FromRoute] string userId)
     {
         return Ok(new UserModel
