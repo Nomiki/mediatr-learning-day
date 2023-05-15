@@ -7,6 +7,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMediatR(c =>
+{
+    c.Lifetime = ServiceLifetime.Scoped;
+    c.RegisterServicesFromAssembly(typeof(Program).Assembly);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
