@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using MediatrPlayground.Behaviors;
 using MediatrPlayground.Dal;
+using MediatrPlayground.MinimalApi;
 using MediatrPlayground.Models.Base;
 using MediatrPlayground.Models.Requests;
 using MediatrPlayground.Models.Responses;
@@ -64,5 +65,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.AddUserEndpoints();
 
 app.Run();
