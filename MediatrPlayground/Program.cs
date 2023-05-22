@@ -2,6 +2,7 @@ using FluentValidation;
 using MediatR;
 using MediatrPlayground.Behaviors;
 using MediatrPlayground.Dal;
+using MediatrPlayground.Models.Base;
 using MediatrPlayground.Models.Requests;
 using MediatrPlayground.Models.Responses;
 using MediatrPlayground.Utils;
@@ -44,7 +45,7 @@ builder.Services.AddTransient<IValidator<PostUserRequest>, PostUserValidator>();
 // builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 // Pipeline Behaviors
-builder.Services.AddScoped<IPipelineBehavior<PostUserRequest, PostUserResponse>, PostUserValidationBehavior>();
+builder.Services.AddScoped<IPipelineBehavior<PostUserRequest, Response<PostUserResponse>>, PostUserValidationBehavior>();
 
 var app = builder.Build();
 

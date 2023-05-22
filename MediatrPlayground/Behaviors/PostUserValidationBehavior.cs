@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
 using MediatR;
+using MediatrPlayground.Models.Base;
 using MediatrPlayground.Models.Requests;
 using MediatrPlayground.Models.Responses;
 
 namespace MediatrPlayground.Behaviors;
 
-public class PostUserValidationBehavior : IPipelineBehavior<PostUserRequest, PostUserResponse>
+public class PostUserValidationBehavior : IPipelineBehavior<PostUserRequest, Response<PostUserResponse>>
 {
     private readonly IValidator<PostUserRequest> _validator;
 
@@ -14,8 +15,8 @@ public class PostUserValidationBehavior : IPipelineBehavior<PostUserRequest, Pos
         _validator = validator;
     }
     
-    public async Task<PostUserResponse> Handle(PostUserRequest request, 
-        RequestHandlerDelegate<PostUserResponse> next, CancellationToken cancellationToken)
+    public async Task<Response<PostUserResponse>> Handle(PostUserRequest request, 
+        RequestHandlerDelegate<Response<PostUserResponse>> next, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (validationResult.IsValid)
@@ -23,6 +24,10 @@ public class PostUserValidationBehavior : IPipelineBehavior<PostUserRequest, Pos
             return await next();
         }
         
-        throw new ValidationException(validationResult.Errors);
+        string errorsString = validationResult.Errors
+            .Select(x => x.ErrorMessage)
+            .Aggregate((x, y) => $"{x}, {y}");
+
+        return Response<PostUserResponse>.Error(errorsString);
     }
 }
