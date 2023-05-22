@@ -1,12 +1,10 @@
-﻿using MediatrPlayground.Models;
-using MediatrPlayground.Models.Base;
-using Microsoft.AspNetCore.Mvc;
+﻿using MediatrPlayground.Models.Base;
 
-namespace MediatrPlayground.Controllers;
+namespace MediatrPlayground.Utils;
 
-public class MyControllerBase : ControllerBase
+public class ResponseParserService : IResponseParserService
 {
-    protected IResult HandleResponse<T>(Response<T> response)
+    public IResult ParseResponse<T>(Response<T> response)
     {
         if (response.Data is not null)
         {

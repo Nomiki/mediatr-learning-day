@@ -48,6 +48,8 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 //builder.Services.AddScoped<IPipelineBehavior<PostUserRequest, Response<PostUserResponse>>, PostUserValidationBehavior>();
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(GenericValidationBehavior<,>));
 
+builder.Services.AddScoped<IResponseParserService, ResponseParserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
