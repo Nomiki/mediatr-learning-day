@@ -26,4 +26,10 @@ public class UserRepository : IUserRepository
         await _collection.InsertOneAsync(user);
         return user;
     }
+
+    public async Task<UserDocument?> FindUserByName(string name)
+    {
+        var filter = Builders<UserDocument>.Filter.Eq(x => x.Name, name);
+        return await _collection.Find(filter).FirstOrDefaultAsync();
+    }
 }

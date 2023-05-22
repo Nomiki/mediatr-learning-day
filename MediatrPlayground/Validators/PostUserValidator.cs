@@ -1,15 +1,22 @@
 ﻿using FluentValidation;
+using MediatrPlayground.Dal;
 using MediatrPlayground.Models.Requests;
 
 namespace MediatrPlayground.Validators;
 
 public class PostUserValidator : AbstractValidator<PostUserRequest>
 {
-    public PostUserValidator()
+    private readonly IUserRepository _repository;
+
+    public PostUserValidator(IUserRepository repository)
     {
+        _repository = repository;
+
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Name is required.");
+            .WithMessage("Name is required.")
+            .MustAsync(BeANewUser)
+            .WithMessage("User already exists.");
 
         RuleFor(x => x.Password)
             .NotEmpty()
@@ -24,5 +31,11 @@ public class PostUserValidator : AbstractValidator<PostUserRequest>
             .WithMessage("Confirm password is required.")
             .Equal(x => x.Password)
             .WithMessage("Confirm password must match password.");
+    }
+
+    private async Task<bool> BeANewUser(string? name, CancellationToken cancellationToken)
+    {
+        var user = await _repository.FindUserByName(name);
+        return user is null;
     }
 }
