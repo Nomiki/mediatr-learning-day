@@ -1,5 +1,11 @@
+using FluentValidation;
+using MediatR;
+using MediatrPlayground.Behaviors;
 using MediatrPlayground.Dal;
+using MediatrPlayground.Models.Requests;
+using MediatrPlayground.Models.Responses;
 using MediatrPlayground.Utils;
+using MediatrPlayground.Validators;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +38,13 @@ builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
 // Registering mongo repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+// Validators
+builder.Services.AddTransient<IValidator<PostUserRequest>, PostUserValidator>();
+// builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+
+// Pipeline Behaviors
+builder.Services.AddScoped<IPipelineBehavior<PostUserRequest, PostUserResponse>, PostUserValidationBehavior>();
 
 var app = builder.Build();
 
