@@ -2,11 +2,9 @@
 
 namespace MediatrPlayground.Models.Base;
 
-public interface IResponse<T>
+public interface IResponse
 {
     public HttpStatusCode StatusCode { get; set; } 
     
     public string? Message { get; set; }
-    
-    public T Data { get; set; }
 }

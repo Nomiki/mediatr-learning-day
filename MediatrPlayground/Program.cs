@@ -41,11 +41,12 @@ builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 // Validators
-builder.Services.AddTransient<IValidator<PostUserRequest>, PostUserValidator>();
-// builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+//builder.Services.AddTransient<IValidator<PostUserRequest>, PostUserValidator>();
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 // Pipeline Behaviors
-builder.Services.AddScoped<IPipelineBehavior<PostUserRequest, Response<PostUserResponse>>, PostUserValidationBehavior>();
+//builder.Services.AddScoped<IPipelineBehavior<PostUserRequest, Response<PostUserResponse>>, PostUserValidationBehavior>();
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(GenericValidationBehavior<,>));
 
 var app = builder.Build();
 

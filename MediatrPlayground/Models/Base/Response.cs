@@ -2,7 +2,7 @@ using System.Net;
 
 namespace MediatrPlayground.Models.Base;
 
-public class Response<T> : IResponse<T>
+public class Response<T> : IResponse
 {
     public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.OK;
     
@@ -26,5 +26,17 @@ public class Response<T> : IResponse<T>
     {
         StatusCode = statusCode,
         Message = message
+    };
+    
+    public static implicit operator Response<T>(T data) => new()
+    {
+        StatusCode = HttpStatusCode.OK,
+        Data = data
+    };
+    
+    public static implicit operator Response<T>(ErrorResponse response) => new()
+    {
+        StatusCode = response.StatusCode,
+        Message = response.Message
     };
 }

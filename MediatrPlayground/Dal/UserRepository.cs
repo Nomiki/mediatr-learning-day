@@ -1,5 +1,4 @@
 ﻿using MediatrPlayground.Dal.Models;
-using MediatrPlayground.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
