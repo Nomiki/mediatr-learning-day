@@ -7,7 +7,7 @@ namespace MediatrPlayground.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UserController : MyControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private readonly IMediator _mediator;
@@ -19,21 +19,21 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{userId}")]
-    public async Task<ActionResult> Get([FromRoute] string userId)
+    public async Task<IResult> Get([FromRoute] string userId)
     {
         GetUserRequest request = new GetUserRequest
         {
             UserId = userId,
         };
         
-        GetUserResponse response = await _mediator.Send(request);
-        return Ok(response);
+        var response = await _mediator.Send(request);
+        return HandleResponse(response);
     }
     
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody] PostUserRequest request)
+    public async Task<IResult> Post([FromBody] PostUserRequest request)
     {
-        PostUserResponse response = await _mediator.Send(request);
-        return Ok(response);
+        var response = await _mediator.Send(request);
+        return HandleResponse(response);
     }
 }

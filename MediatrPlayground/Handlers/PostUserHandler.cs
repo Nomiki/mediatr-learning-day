@@ -1,15 +1,16 @@
-﻿using System.Runtime.Intrinsics.Arm;
+﻿using System.Net;
 using MediatR;
 using MediatrPlayground.Dal;
 using MediatrPlayground.Dal.Models;
 using MediatrPlayground.Models;
+using MediatrPlayground.Models.Base;
 using MediatrPlayground.Models.Requests;
 using MediatrPlayground.Models.Responses;
 using MediatrPlayground.Utils;
 
 namespace MediatrPlayground.Handlers;
 
-public class PostUserHandler : IRequestHandler<PostUserRequest, PostUserResponse>
+public class PostUserHandler : IRequestHandler<PostUserRequest, Response<PostUserResponse>>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
@@ -20,7 +21,7 @@ public class PostUserHandler : IRequestHandler<PostUserRequest, PostUserResponse
         _passwordHasher = passwordHasher;
     }
     
-    public async Task<PostUserResponse> Handle(PostUserRequest request, CancellationToken cancellationToken)
+    public async Task<Response<PostUserResponse>> Handle(PostUserRequest request, CancellationToken cancellationToken)
     { 
         UserDocument user = new()
         {
@@ -35,6 +36,6 @@ public class PostUserHandler : IRequestHandler<PostUserRequest, PostUserResponse
             Name = userDocument.Name
         };
         
-        return response;
+        return Response<PostUserResponse>.WithData(response, HttpStatusCode.Created);
     }
 }

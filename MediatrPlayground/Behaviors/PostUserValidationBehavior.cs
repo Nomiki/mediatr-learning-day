@@ -17,7 +17,7 @@ public class PostUserValidationBehavior : IPipelineBehavior<PostUserRequest, Pos
     public async Task<PostUserResponse> Handle(PostUserRequest request, 
         RequestHandlerDelegate<PostUserResponse> next, CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(request);
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (validationResult.IsValid)
         {
             return await next();
