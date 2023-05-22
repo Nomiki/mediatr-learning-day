@@ -6,4 +6,6 @@ namespace MediatrPlayground.Dal.Models;
 public class UserDocument : MongoDocument
 {
     public string? Name { get; set; }
+    
+    public string? PasswordHash { get; set; }
 }

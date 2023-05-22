@@ -1,4 +1,5 @@
 using MediatrPlayground.Dal;
+using MediatrPlayground.Utils;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +26,8 @@ builder.Services.AddSingleton(sp =>
 
     return client.GetDatabase("mediatr-playground");
 });
+
+builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
 // Registering mongo repositories
 builder.Services.AddTransient<IUserRepository, UserRepository>();
