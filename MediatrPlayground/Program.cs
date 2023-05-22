@@ -27,6 +27,7 @@ builder.Services.AddSingleton(sp =>
     return client.GetDatabase("mediatr-playground");
 });
 
+// Password Hasher
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
 // Registering mongo repositories
