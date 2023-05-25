@@ -35,7 +35,7 @@ public class PostUserValidator : AbstractValidator<PostUserRequest>
 
     private async Task<bool> BeANewUser(string? name, CancellationToken cancellationToken)
     {
-        var user = await _repository.FindUserByName(name);
+        var user = await _repository.FindUserByName(name!);
         return user is null;
     }
 }
